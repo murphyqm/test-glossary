@@ -1,0 +1,113 @@
+---
+title: "Technical Glossary"
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc-location: left
+    css: styles.css
+    code-fold: true
+    df-print: paged
+---
+
+```{r setup, include=FALSE}
+library(yaml)
+library(dplyr)
+library(DT)
+library(knitr)
+
+# Read the glossary data
+glossary_data <- yaml::read_yaml("entries.yaml")
+entries <- glossary_data$entries
+
+# Convert to data frame and sort alphabetically
+df <- do.call(rbind, lapply(entries, function(x) {
+  data.frame(
+    Term = x$term,
+    Definition = x$definition,
+    Tags = paste(x$tags, collapse = ", "),
+    Links = if(!is.null(x$links)) {
+      paste(sapply(x$links, function(link) {
+        paste0('<a href="', link$url, '" target="_blank">', link$title, '</a>')
+      }), collapse = "<br>")
+    } else "",
+    stringsAsFactors = FALSE
+  )
+})) %>%
+  arrange(Term)
+```
+
+# Welcome to the Glossary
+
+This glossary contains technical terms and definitions. Use the search box below to find specific terms, or browse by category using the tag filters.
+
+## Browse All Terms
+
+```{r glossary-table, echo=FALSE}
+# Create the interactive table
+DT::datatable(
+  df,
+  escape = FALSE,
+  options = list(
+    pageLength = 25,
+    lengthMenu = c(10, 25, 50, 100),
+    searchHighlight = TRUE,
+    dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel'),
+    columnDefs = list(
+      list(width = '20%', targets = 0),  # Term column
+      list(width = '45%', targets = 1),  # Definition column
+      list(width = '20%', targets = 2),  # Tags column
+      list(width = '15%', targets = 3)   # Links column
+    )
+  ),
+  filter = 'top',
+  colnames = c('Term', 'Definition', 'Tags', 'Related Links'),
+  caption = 'Use the search boxes above each column to filter results'
+)
+```
+
+## Statistics
+
+```{r stats, echo=FALSE}
+total_terms <- nrow(df)
+unique_tags <- length(unique(unlist(strsplit(df$Tags, ", "))))
+
+cat("**Total Terms:** ", total_terms, "\n\n")
+cat("**Unique Tags:** ", unique_tags, "\n\n")
+```
+
+## Tag Cloud
+
+```{r tag-cloud, echo=FALSE}
+# Extract all tags and count frequency
+all_tags <- unlist(strsplit(df$Tags, ", "))
+tag_counts <- table(all_tags)
+tag_df <- data.frame(
+  Tag = names(tag_counts),
+  Count = as.numeric(tag_counts)
+) %>% 
+  arrange(desc(Count))
+
+kable(tag_df, caption = "Tag Frequency")
+```
+
+---
+
+## Contributing
+
+To add new terms to this glossary:
+
+1. Edit the `entries.yaml` file
+2. Follow the existing format:
+   ```yaml
+   - term: "Your Term"
+     definition: "Clear, concise definition"
+     tags: ["category1", "category2"]
+     links:
+       - title: "Related Resource"
+         url: "https://example.com"
+   ```
+3. Commit your changes - the glossary will automatically update
+
+*Last updated: `r Sys.Date()`*

@@ -1,0 +1,13 @@
+name: glossary-env
+
+dependencies:
+  - r-base=4.3.*
+  - r-essentials
+  - r-yaml
+  - r-dplyr
+  - r-dt
+  - r-knitr
+  - r-rmarkdown
+  - r-htmltools
+  - r-htmlwidgets
+  - pandoc

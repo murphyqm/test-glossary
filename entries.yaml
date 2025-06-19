@@ -1,0 +1,16 @@
+entries:
+  - term: "API"
+    definition: "Application Programming Interface - a set of protocols and tools for building software applications"
+    tags: ["programming", "web development"]
+    links:
+      - title: "REST API Tutorial"
+        url: "https://example.com/rest-tutorial"
+      - title: "API Design Best Practices"
+        url: "https://example.com/api-design"
+    
+  - term: "Bootstrap"
+    definition: "A popular CSS framework for developing responsive and mobile-first websites"
+    tags: ["css", "web development", "frontend"]
+    links:
+      - title: "Official Bootstrap Documentation"
+        url: "https://getbootstrap.com"
