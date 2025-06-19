@@ -49,7 +49,7 @@ jobs:
     - name: Render Quarto document
       shell: bash -el {0}
       run: |
-        quarto render glossary.qmd
+        quarto render index.qmd
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
