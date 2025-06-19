@@ -73,11 +73,9 @@ DT::datatable(
 total_terms <- nrow(df)
 unique_tags <- length(unique(unlist(strsplit(df$Tags, ", "))))
 
-cat("**Total Terms:** ", total_terms, "\n\n")
-cat("**Unique Tags:** ", unique_tags, "\n\n")
+cat("Total Terms: ", total_terms, "\n\n")
+cat("Unique Tags: ", unique_tags, "\n\n")
 ```
-
-## Tag Cloud
 
 ```{r tag-cloud, echo=FALSE}
 # Extract all tags and count frequency
